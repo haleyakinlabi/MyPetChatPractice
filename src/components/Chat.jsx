@@ -1,9 +1,20 @@
 import React from "react";
+import Messages from "./Messages";
+import Input from "./Input";
 
 const Chat = () => {
 
     return(
-        <div className="chat">Chat</div>
+        <div className="chat">
+        
+        <div className="chatInfo">
+            <span>Jane</span>  
+        </div>
+        
+        <Messages></Messages>
+        <Input></Input>
+        
+        </div>
     )
 }
 
