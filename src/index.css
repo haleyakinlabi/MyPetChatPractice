@@ -1,13 +1,118 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.formContainer{
+  background-color: #C4C6E5;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+
+form{
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-self: center;
+      justify-content: center;
+
+}
+
+.loginLink{
+  padding-top: 350px;
+  align-self: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.home{
+  background-color: #C4C6E5;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container{
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 65%;
+  height: 80%;
+  display: flex;
+  overflow: hidden;
+
+}
+
+.sidebar{
+  flex: 1;
+  background-color: #7191CA;
+}
+
+.chat{
+  flex: 2;
+}
+
+.navbar{
+  display: flex;
+  align-items: center;
+  background-color: #55647d;
+  height: 50px;
+  padding: 10px;
+  justify-content: space-between;
+  color: white;
+}
+
+.logo{
+  font-weight: bold;
+}
+
+.user{
+  display: flex;
+  gap: 10px
+}
+
+.userimg{
+  background-color: darkgray;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+
+}
+
+.logout{
+  background-color: #C4C6E5;
+  font-size: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.search{
+  border-bottom: 1px solid gray;
+}
+
+.chatimg{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.searchInput{
+  background-color: transparent;
+  border:none;
+  color:white;
+  outline: none;
+
+}
+
+.userChat {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap:10px;
+  color: white;
+  cursor: pointer;
+}
+
+.userChat:hover{
+  background-color:#55647d;;
 }
