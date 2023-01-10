@@ -1,42 +1,57 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Login = () => {
+  const [err, setErr] = useState(false);
+  const navigate = useNavigate();
 
-    return(
 
-        <div className="formContainer">
+  //handleSubmit Function
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
 
-        <div className="formWrapper"></div>
-
-        {/* Register Form */}
-
-        <form>
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/")
+    
+    } catch (err) {
+      setErr(true);
+    }
+  };
+  
+  return (
+    
+    <div className="formContainer">
+      
+      <div className="formWrapper">
         
-        <span className="logo">Chat</span>
-
-        <span className="title">Register</span>
-
-        {/* inputs */}
-        <input type="text" placeholder="display name"></input>
-        <input type="email" placeholder="email"></input>
-        <input type="password" placeholder="password"></input>
+        <span className="logo">Chat</span><br></br><br></br>
         
+        <span className="title">Login</span>
 
-        <button>Sign In</button>
-
+        {/* Form */}
+        
+        <form onSubmit={handleSubmit}>
+          
+          <input type="email" placeholder="email" />
+          
+          <input type="password" placeholder="password" />
+          
+          <button>Sign in</button>
+          {err && <span>Something went wrong</span>}
+        
         </form>
+        
+        <p>You don't have an account? <Link to="/register">Register</Link></p>
+      
+      </div>
+    
+    </div>
+  );
+};
 
-        <p className="loginLink">Don't have an account? Register</p>
-
-        </div>
-
-
-
-    )
-
-
-}
-
-
-export default Login
+export default Login;
