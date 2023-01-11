@@ -1,25 +1,98 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { ChatContext } from "../context/ChatContext";
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db, storage } from "../firebase";
+import { v4 as uuid } from "uuid";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const Input = () => {
+  const [text, setText] = useState("");
+  const [img, setImg] = useState(null);
 
-    return(
-        <div className="input">
+  const { currentUser } = useContext(AuthContext);
+  const { data } = useContext(ChatContext);
 
-        <input className="inputInput"type="text" placeholder="Type something..."></input>
+  const handleSend = async () => {
+    if (img) {
+      const storageRef = ref(storage, uuid());
 
-        <div className="send">
+      const uploadTask = uploadBytesResumable(storageRef, img);
 
-            <input type="file" style={{display: "none"}} id="file"></input>
-            <label htmlFor="file">
-                <img className="addImg"src="https://img.icons8.com/ios-glyphs/512/add-image.png" alt=""></img>
-            </label>
-            <button className="inputSendBtn">Send</button>
-        </div>
-        
+      uploadTask.on(
+        (error) => {
+          //TODO:Handle Error
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateDoc(doc(db, "chats", data.chatId), {
+              messages: arrayUnion({
+                id: uuid(),
+                text,
+                senderId: currentUser.uid,
+                date: Timestamp.now(),
+                img: downloadURL,
+              }),
+            });
+          });
+        }
+      );
+    } else {
+      await updateDoc(doc(db, "chats", data.chatId), {
+        messages: arrayUnion({
+          id: uuid(),
+          text,
+          senderId: currentUser.uid,
+          date: Timestamp.now(),
+        }),
+      });
+    }
 
-        </div>
-    )
-}
+    await updateDoc(doc(db, "userChats", currentUser.uid), {
+      [data.chatId + ".lastMessage"]: {
+        text,
+      },
+      [data.chatId + ".date"]: serverTimestamp(),
+    });
 
+    await updateDoc(doc(db, "userChats", data.user.uid), {
+      [data.chatId + ".lastMessage"]: {
+        text,
+      },
+      [data.chatId + ".date"]: serverTimestamp(),
+    });
 
-export default Input
+    setText("");
+    setImg(null);
+  };
+  return (
+    <div className="input">
+      <input
+        type="text"
+        placeholder="Type something..."
+        onChange={(e) => setText(e.target.value)}
+        value={text}
+      />
+      <div className="send">
+        <input
+          type="file"
+          style={{ display: "none" }}
+          id="file"
+          onChange={(e) => setImg(e.target.files[0])}
+        />
+        <label htmlFor="file">
+          <img className="inputImg"src="https://img.icons8.com/ios-glyphs/512/add-image.png" alt="" />
+        </label>
+        <button onClick={handleSend}>Send</button>
+      </div>
+    </div>
+  );
+};
+
+export default Input;
