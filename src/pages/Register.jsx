@@ -5,16 +5,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 
+
 const createDBUser = (userID, displayName, email) => {
-
-// // Add a new document in collection "cities"
-// await setDoc(doc(db, "cities", "LA"), {
-//   name: "Los Angeles",
-//   state: "CA",
-//   country: "USA"
-// });
-
-
 }
 
 
@@ -23,6 +15,9 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
+// ------------------------------------------------------------------
+  //handleSubmit
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -55,8 +50,6 @@ const Register = () => {
               photoURL: downloadURL,
             });
 
-
-
             //create empty user chats on firestore
             await setDoc(doc(db, "userChats", res.user.uid), {});
             navigate("/");
@@ -72,40 +65,53 @@ const Register = () => {
       setLoading(false);
     }
   };
+//------------------------------------------------------------------------
 
   return (
     <div className="formContainer">
       
       <div className="formWrapper">
         
-        <span className="logo">Chat</span>
-        <br></br>
-        <span className="title">Register</span>
+      
+        
+        <h1 className="title">Create an account</h1>
 
         {/* Form */}
         
         <form onSubmit={handleSubmit}>
           
-          <input required type="text" placeholder="display name" />
+          <input 
+          className="registerInput" 
+          required type="text" 
+          placeholder="display name" 
+          />
           
-          <input required type="email" placeholder="email" />
+          <input 
+          className="registerInput"
+          required type="email" 
+          placeholder="email" 
+          />
           
-          <input required type="password" placeholder="password" />
+          <input 
+          className="registerInput" 
+          required type="password" 
+          placeholder="password" />
           
           <input required style={{ display: "none" }} type="file" id="file" />
           
           <label htmlFor="file">
             <img className="registerAddImg" src="https://img.icons8.com/ios-glyphs/512/add-image.png" alt="" />
-            <span>Add a profile picture</span>
+            <span className="addImg">Add a profile picture</span>
           </label>
           
-          <button disabled={loading}>Sign up</button>
+          <button className="registerBtn" disabled={loading}>Sign up</button>
+          
           {loading && "Uploading and compressing the image please wait..."}
-          {err && <span>Something went wrong</span>}
+          {err && <span className="wrong">Something went wrong</span>}
         
         </form>
-        <p>
-          You do have an account? <Link to="/login">Login</Link>
+        <p className="haveAccount">
+          Already have an account? <Link className="loginLink"to="/login">Login</Link>
         </p>
       </div>
     </div>
