@@ -5,6 +5,19 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 
+const createDBUser = (userID, displayName, email) => {
+
+// // Add a new document in collection "cities"
+// await setDoc(doc(db, "cities", "LA"), {
+//   name: "Los Angeles",
+//   state: "CA",
+//   country: "USA"
+// });
+
+
+}
+
+
 const Register = () => {
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,6 +54,8 @@ const Register = () => {
               email,
               photoURL: downloadURL,
             });
+
+
 
             //create empty user chats on firestore
             await setDoc(doc(db, "userChats", res.user.uid), {});
